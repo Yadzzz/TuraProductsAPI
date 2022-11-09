@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using TuraProductsAPI.Attributes;
 using TuraProductsAPI.Models;
 using System.Linq;
+using System.Buffers.Text;
+using System.Drawing.Drawing2D;
+using NuGet.Packaging.Signing;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,7 +37,7 @@ namespace TuraProductsAPI.Controllers
         [HttpGet("{id}/{currencyCode}")]
         public async Task<ActionResult<ProductDataModel>> GetProductData(string id, string currencyCode)
         {
-            if (currencyCode.ToLower().Contains("se") || currencyCode == null || currencyCode == string.Empty)
+            if (currencyCode.ToLower().Contains("sek") || currencyCode == null || currencyCode == string.Empty)
                 currencyCode = "";
             else
                 currencyCode = currencyCode.ToUpper();
