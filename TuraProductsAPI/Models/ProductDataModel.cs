@@ -37,6 +37,13 @@
         public DateTime EndingDate { get; set; }
         public byte AllowLineDisc { get; set; }
 
+        //TiNavItem data
+        public string PrimaryEANCode { get; set; }
+        public string UnitOfMeasure { get; set; }
+
+        //TiNavQtyTmp
+        public decimal AvailableQty { get; set; }
+
         public void SetProductDescriptionData(string variandId, string? baseId, string? gtin, int? activityCode, string? manufacturerItemNo,
                                                 string? brand, string? seItemName, string? seItemText, string? noItemName, string? noItemText,
                                                 string? dkItemName, string? dkItemText, string? fiItemName, string? fiItemText, string? enItemName,
@@ -118,6 +125,17 @@
             this.VatBusPostingGrPrice = tiNavSalesPrice.VatBusPostingGrPrice;
             this.EndingDate = tiNavSalesPrice.EndingDate;
             this.AllowLineDisc = tiNavSalesPrice.AllowLineDisc;
+        }
+
+        public void SetItem(DataAccessLibrary.Models.TiNavItem tiNavItem)
+        {
+            this.PrimaryEANCode = tiNavItem.PrimaryEanCode;
+            this.UnitOfMeasure = tiNavItem.BaseUnitOfMeasure;
+        }
+
+        public void SetQtyTmp(DataAccessLibrary.Models.TiNavQtyTmp tiNavQtyTmp)
+        {
+            this.AvailableQty = tiNavQtyTmp.AvailableQty;
         }
     }
 }

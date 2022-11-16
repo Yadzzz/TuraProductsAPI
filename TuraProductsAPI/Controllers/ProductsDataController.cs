@@ -9,6 +9,9 @@ using System.Linq;
 using System.Buffers.Text;
 using System.Drawing.Drawing2D;
 using NuGet.Packaging.Signing;
+using System.Net;
+using ExceptionHandler;
+using System;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,33 +40,39 @@ namespace TuraProductsAPI.Controllers
         [HttpGet("{id}/{currencyCode}")]
         public async Task<ActionResult<ProductDataModel>> GetProductData(string id, string currencyCode)
         {
-            if (currencyCode.ToLower().Contains("sek") || currencyCode == null || currencyCode == string.Empty)
-                currencyCode = "";
-            else
-                currencyCode = currencyCode.ToUpper();
-
-            ProductDataModel productDataModel = new ProductDataModel();
-
-            var tiLitProductDescription = await _context.TiLitProductDescriptions.FindAsync(id);
-
-            if (tiLitProductDescription == null)
+            try
             {
-                return NotFound();
+                if (currencyCode.ToLower().Contains("sek") || currencyCode == null || currencyCode == string.Empty)
+                    currencyCode = "";
+                else
+                    currencyCode = currencyCode.ToUpper();
+
+                ProductDataModel productDataModel = new ProductDataModel();
+
+                var tiLitProductDescription = await _context.TiLitProductDescriptions.FindAsync(id);
+                var tiNavSalesPrice = await _context.TiNavSalesPrices.AsNoTracking().
+                                            Where(i => i.ItemNo == id).Where(i => i.CurrencyCode == currencyCode).FirstOrDefaultAsync();
+                var tiNavItem = await _context.TiNavItems.FindAsync(id);
+                var tiNavQtyTmp = await _context.TiNavQtyTmps.FindAsync(id);
+
+                if (tiLitProductDescription == null || tiNavQtyTmp == null || tiNavSalesPrice == null || tiNavItem == null)
+                {
+                    return NotFound();
+                }
+
+                productDataModel.SetProductDescriptionData(tiLitProductDescription);
+                productDataModel.SetSalesPrices(tiNavSalesPrice);
+                productDataModel.SetItem(tiNavItem);
+                productDataModel.SetQtyTmp(tiNavQtyTmp);
+
+                return productDataModel;
             }
-
-            productDataModel.SetProductDescriptionData(tiLitProductDescription);
-
-            var tiNavSalesPrice = await _context.TiNavSalesPrices.AsNoTracking().
-                                        Where(i => i.ItemNo == id).Where(i => i.CurrencyCode == currencyCode).FirstOrDefaultAsync();
-
-            if (tiNavSalesPrice == null)
+            catch(Exception exception)
             {
-                return NotFound();
+                ExceptionLogger.LogException(exception);
+
+                return BadRequest();
             }
-
-            productDataModel.SetSalesPrices(tiNavSalesPrice);
-
-            return productDataModel;
         }
     }
 }
