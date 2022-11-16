@@ -3,12 +3,12 @@ using DataAccessLibrary.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IConfigurationRoot configuration = new ConfigurationBuilder()
-                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                    .AddJsonFile("appsettings.json")
-                    .Build();
+//IConfigurationRoot configuration = new ConfigurationBuilder()
+//                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+//                    .AddJsonFile("appsettings.json")
+//                    .Build();
 
-configuration.GetConnectionString("Default");
+//configuration.GetConnectionString("Default");
 
 // Add services to the container.
 builder.Services.AddControllers();
