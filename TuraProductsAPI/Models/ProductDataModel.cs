@@ -44,28 +44,11 @@
         //TiNavQtyTmp
         public decimal AvailableQty { get; set; }
 
-        public void SetProductDescriptionData(string variandId, string? baseId, string? gtin, int? activityCode, string? manufacturerItemNo,
-                                                string? brand, string? seItemName, string? seItemText, string? noItemName, string? noItemText,
-                                                string? dkItemName, string? dkItemText, string? fiItemName, string? fiItemText, string? enItemName,
-                                                string? enItemText)
-        {
-            this.VariantId = variandId;
-            this.BaseId = baseId;
-            this.Gtin = gtin;
-            this.ActivityCode = activityCode;
-            this.ManufacturerItemNo = manufacturerItemNo;
-            this.Brand = brand;
-            this.SeItemName = seItemName;
-            this.SeItemText = seItemText;
-            this.NoItemName = noItemName;
-            this.NoItemText = noItemText;
-            this.DkItemName = dkItemName;
-            this.DkItemText = dkItemText;
-            this.FiItemName = fiItemName;
-            this.FiItemText = fiItemText;
-            this.EnItemName = enItemName;
-            this.EnItemText = enItemText;
-        }
+        //TiNavItemUnitOfMeasure
+        public decimal QtyPerUnitOfMeasure { get; set; }
+
+        //Price withtout vat
+        public decimal UnitPriceWithoutVat { get; set; }
 
         public void SetProductDescriptionData(DataAccessLibrary.Models.TiLitProductDescription tiLitProductDescription)
         {
@@ -85,27 +68,6 @@
             this.FiItemText = tiLitProductDescription.FiItemText;
             this.EnItemName = tiLitProductDescription.EnItemName;
             this.EnItemText = tiLitProductDescription.EnItemText;
-        }
-
-        public void SetSalesPrices(byte[] timestamp, string itemNo, int salesType, string salesCode, DateTime startingDate, string currencyCode, string variantCode,
-                                    string unitOfMeasureCode, decimal minimumQuantity, decimal unitPrice, byte priceIncludesVat, byte allowInvoiceDisc,
-                                    string vatBusPostingGrPrice, DateTime endingDate, byte allowLineDisc)
-        {
-            this.Timestamp = timestamp;
-            this.ItemNo = itemNo;
-            this.SalesType = salesType;
-            this.SalesCode = salesCode;
-            this.StartingDate = startingDate;
-            this.CurrencyCode = currencyCode;
-            this.VariantCode = variantCode;
-            this.UnitOfMeasureCode = unitOfMeasureCode;
-            this.MinimumQuantity = minimumQuantity;
-            this.UnitPrice = unitPrice;
-            this.PriceIncludesVat = priceIncludesVat;
-            this.AllowInvoiceDisc= allowInvoiceDisc;
-            this.VatBusPostingGrPrice = vatBusPostingGrPrice;
-            this.EndingDate= endingDate;
-            this.AllowLineDisc= allowLineDisc;
         }
 
         public void SetSalesPrices(DataAccessLibrary.Models.TiNavSalesPrice tiNavSalesPrice)
@@ -136,6 +98,16 @@
         public void SetQtyTmp(DataAccessLibrary.Models.TiNavQtyTmp tiNavQtyTmp)
         {
             this.AvailableQty = tiNavQtyTmp.AvailableQty;
+        }
+
+        public void SetItemUnitOfMeasure(DataAccessLibrary.Models.TiNavItemUnitOfMeasure tiNavItemUnitOfMeasure)
+        {
+            this.QtyPerUnitOfMeasure = tiNavItemUnitOfMeasure.QtyPerUnitOfMeasure;
+        }
+        
+        public void SetUnitPriceWithoutVat(decimal price)
+        {
+            this.UnitPriceWithoutVat = price;
         }
     }
 }

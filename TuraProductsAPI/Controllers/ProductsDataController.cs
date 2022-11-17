@@ -42,6 +42,12 @@ namespace TuraProductsAPI.Controllers
         {
             try
             {
+                string salesCode = string.Empty;
+                if (currencyCode.ToLower().Contains("sek") || currencyCode == null || currencyCode == string.Empty)
+                    salesCode = "REK_SEK";
+                else
+                    salesCode = "REK_" + currencyCode.ToUpper();
+
                 if (currencyCode.ToLower().Contains("sek") || currencyCode == null || currencyCode == string.Empty)
                     currencyCode = "";
                 else
@@ -50,20 +56,52 @@ namespace TuraProductsAPI.Controllers
                 ProductDataModel productDataModel = new ProductDataModel();
 
                 var tiLitProductDescription = await _context.TiLitProductDescriptions.FindAsync(id);
-                var tiNavSalesPrice = await _context.TiNavSalesPrices.AsNoTracking().
-                                            Where(i => i.ItemNo == id).Where(i => i.CurrencyCode == currencyCode).FirstOrDefaultAsync();
-                var tiNavItem = await _context.TiNavItems.FindAsync(id);
-                var tiNavQtyTmp = await _context.TiNavQtyTmps.FindAsync(id);
+                if (tiLitProductDescription == null)
+                {
+                    return NotFound();
+                }
 
-                if (tiLitProductDescription == null || tiNavQtyTmp == null || tiNavSalesPrice == null || tiNavItem == null)
+                var tiNavSalesPriceREK = await _context.TiNavSalesPrices.AsNoTracking().
+                                            Where(i => i.ItemNo == id).Where(i => i.CurrencyCode == currencyCode 
+                                                    && i.SalesCode == salesCode).FirstOrDefaultAsync();
+
+                if (tiNavSalesPriceREK == null)
+                {
+                    return NotFound();
+                }
+
+                var priceWithoutVat = await _context.TiNavSalesPrices.AsNoTracking().
+                                            Where(i => i.ItemNo == id).Where(i => i.CurrencyCode == currencyCode
+                                                    && i.PriceIncludesVat == 0 && i.SalesCode == string.Empty).Select(u => u.UnitPrice).FirstOrDefaultAsync();
+                //if (priceWithoutVat == null)
+                //{
+                //    return NotFound();
+                //}
+
+                var tiNavItem = await _context.TiNavItems.FindAsync(id);
+                if (tiNavItem == null)
+                {
+                    return NotFound();
+                }
+
+                var tiNavQtyTmp = await _context.TiNavQtyTmps.FindAsync(id);
+                if (tiNavQtyTmp == null)
+                {
+                    return NotFound();
+                }
+
+                var tiNavItemUnitOfMeasure = await _context.TiNavItemUnitOfMeasures.FindAsync(id, "INNER");
+                if(tiNavItemUnitOfMeasure == null)
                 {
                     return NotFound();
                 }
 
                 productDataModel.SetProductDescriptionData(tiLitProductDescription);
-                productDataModel.SetSalesPrices(tiNavSalesPrice);
+                productDataModel.SetSalesPrices(tiNavSalesPriceREK);
                 productDataModel.SetItem(tiNavItem);
                 productDataModel.SetQtyTmp(tiNavQtyTmp);
+                productDataModel.SetItemUnitOfMeasure(tiNavItemUnitOfMeasure);
+                productDataModel.SetUnitPriceWithoutVat(priceWithoutVat);
 
                 return productDataModel;
             }
