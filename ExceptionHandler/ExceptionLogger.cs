@@ -13,6 +13,11 @@ namespace ExceptionHandler
 
         public static void LogException(Exception exception)
         {
+            if (!Directory.Exists("logs"))
+            {
+                Directory.CreateDirectory("logs");
+            }
+
             if (!File.Exists(filePath))
             {
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
