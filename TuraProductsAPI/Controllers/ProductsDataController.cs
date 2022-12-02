@@ -10,7 +10,6 @@ using System.Buffers.Text;
 using System.Drawing.Drawing2D;
 using NuGet.Packaging.Signing;
 using System.Net;
-using ExceptionHandler;
 using System;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,10 +21,12 @@ namespace TuraProductsAPI.Controllers
     [ApiController]
     public class ProductsDataController : ControllerBase
     {
+        private readonly ILogger<ProductsDataController> logger;
         private readonly TIDataDbContext _context;
 
-        public ProductsDataController(TIDataDbContext context)
+        public ProductsDataController(TIDataDbContext context, ILogger<ProductsDataController> _logger)
         {
+            this.logger = _logger;
             this._context = context;
         }
 
@@ -36,7 +37,7 @@ namespace TuraProductsAPI.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/SalesPrices/5/DKK
+        // GET: api/ProductsData/5/DKK
         [HttpGet("{id}/{currencyCode}")]
         public async Task<ActionResult<ProductDataModel>> GetProductData(string id, string currencyCode)
         {
@@ -107,7 +108,8 @@ namespace TuraProductsAPI.Controllers
             }
             catch(Exception exception)
             {
-                ExceptionLogger.LogException(exception);
+                //ExceptionLogger.LogException(exception);
+                this.logger.LogError(exception, exception.ToString());
 
                 return BadRequest();
             }
