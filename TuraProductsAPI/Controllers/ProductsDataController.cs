@@ -30,13 +30,6 @@ namespace TuraProductsAPI.Controllers
             this._context = context;
         }
 
-        // GET: api/<ProductsDataController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET: api/ProductsData/5/DKK
         [HttpGet("{id}/{currencyCode}")]
         public async Task<ActionResult<ProductDataModel>> GetProductData(string id, string currencyCode)

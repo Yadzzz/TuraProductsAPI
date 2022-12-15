@@ -76,7 +76,7 @@ namespace DataAccessLibrary.Context
             if (!optionsBuilder.IsConfigured)
             {
                 //optionsBuilder.UseSqlServer("Data Source=LAPTOP-V6EKNDRG\\SQLEXPRESS;Initial Catalog=TI;Integrated Security=True;");
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("Default"));
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("TI"));
             }
         }
 
