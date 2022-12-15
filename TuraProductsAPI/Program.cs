@@ -1,6 +1,7 @@
 using TuraProductsAPI;
 using DataAccessLibrary.Context;
 using Serilog;
+using TuraProductsAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<TIDataDbContext>();
+builder.Services.AddScoped<PdfService>();
 
 Log.Logger = new LoggerConfiguration()
 .Enrich.FromLogContext()

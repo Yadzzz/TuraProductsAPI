@@ -8,12 +8,12 @@ using StreamServiceDataAccessLibrary.Context;
 
 namespace TuraProductsAPI.Services.PDF.Documents
 {
-    public class InvoiceDocument : IDocument
+    public class InterestDocument : IDocument
     {
         public string DocumentNumber { get; set; }
         public DocumentType DocumentType { get; set; }
 
-        public InvoiceDocument(string documentNumber, DocumentType documentType)
+        public InterestDocument(string documentNumber, DocumentType documentType)
         {
             this.DocumentNumber = documentNumber;
             this.DocumentType = documentType;
@@ -27,7 +27,7 @@ namespace TuraProductsAPI.Services.PDF.Documents
             {
                 try
                 {
-                    var data = context.MetaInvoices.AsNoTracking().OrderByDescending(y => y.BlobInfoCreationDateTime).AsNoTracking()
+                    var data = context.MetaFinanceChrgs.AsNoTracking().AsNoTracking().OrderByDescending(y => y.BlobInfoCreationDateTime).AsNoTracking()
                                                                     .Where(x => x.InvoiceNumber == this.DocumentNumber).AsNoTracking().FirstOrDefault();
 
                     if (data == null || data.DocumentData == null)

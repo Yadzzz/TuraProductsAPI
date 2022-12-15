@@ -8,14 +8,14 @@ namespace TuraProductsAPI.Services.PDF
 {
     public class DocumentData
     {
-        public string InvoicdeNumber { get; set; }
-        public DocumentType PdfType { get; set; }
+        public string DocumentNumber { get; set; }
+        public DocumentType DocumentType { get; set; }
         public byte[] Data { get; set; }
 
-        public DocumentData(string invoicdeNumber, DocumentType pdfType, byte[] data)
+        public DocumentData(string documentNumber, DocumentType documentType, byte[] data)
         {
-            this.InvoicdeNumber = invoicdeNumber;
-            this.PdfType = pdfType;
+            this.DocumentNumber = documentNumber;
+            this.DocumentType = documentType;
             this.Data = data;
         }
     }

@@ -8,6 +8,10 @@ namespace TuraProductsAPI.Services.PDF
 {
     public abstract class DocumentCreatorFactory
     {
-        public abstract IDocument CreateInvoice();
+        public abstract IDocument CreateInvoiceDocument(string documentNumber);
+        public abstract IDocument CreateDeliveryDocument(string documentNumber);
+        public abstract IDocument CreateConfirmationDocument(string documentNumber);
+        public abstract IDocument CreateInterestDocument(string documentNumber);
+        public abstract IDocument CreateReturnDocument(string documentNumber);
     }
 }

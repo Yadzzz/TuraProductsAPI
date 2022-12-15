@@ -5,15 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StreamServiceDataAccessLibrary.Context;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TuraProductsAPI.Services.PDF.Documents
 {
-    public class InvoiceDocument : IDocument
+    public class ConfirmationDocument : IDocument
     {
         public string DocumentNumber { get; set; }
         public DocumentType DocumentType { get; set; }
 
-        public InvoiceDocument(string documentNumber, DocumentType documentType)
+        public ConfirmationDocument(string documentNumber, DocumentType documentType)
         {
             this.DocumentNumber = documentNumber;
             this.DocumentType = documentType;
@@ -27,8 +28,8 @@ namespace TuraProductsAPI.Services.PDF.Documents
             {
                 try
                 {
-                    var data = context.MetaInvoices.AsNoTracking().OrderByDescending(y => y.BlobInfoCreationDateTime).AsNoTracking()
-                                                                    .Where(x => x.InvoiceNumber == this.DocumentNumber).AsNoTracking().FirstOrDefault();
+                    var data = context.MetaOrderbeks.AsNoTracking().OrderByDescending(y => y.BlobInfoCreationDateTime).AsNoTracking()
+                                                                    .Where(x => x.OrderNumber == this.DocumentNumber).AsNoTracking().FirstOrDefault();
 
                     if (data == null || data.DocumentData == null)
                     {
@@ -37,7 +38,7 @@ namespace TuraProductsAPI.Services.PDF.Documents
 
                     documentData = data.DocumentData;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     //Log
                     return null;

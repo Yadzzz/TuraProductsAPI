@@ -97,12 +97,16 @@ namespace TuraProductsAPI.Controllers
                 productDataModel.SetItemUnitOfMeasure(tiNavItemUnitOfMeasure);
                 productDataModel.SetUnitPriceWithoutVat(priceWithoutVat);
 
+
+                //this._context.Dispose();
+
                 return productDataModel;
             }
             catch(Exception exception)
             {
-                //ExceptionLogger.LogException(exception);
                 this.logger.LogError(exception, exception.ToString());
+
+                //this._context.Dispose();
 
                 return BadRequest();
             }
