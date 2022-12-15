@@ -2,15 +2,11 @@ using TuraProductsAPI;
 using DataAccessLibrary.Context;
 using Serilog;
 using TuraProductsAPI.Services;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//IConfigurationRoot configuration = new ConfigurationBuilder()
-//                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-//                    .AddJsonFile("appsettings.json")
-//                    .Build();
-
-//configuration.GetConnectionString("Default");
+//ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 // Add services to the container.
 builder.Services.AddControllers();

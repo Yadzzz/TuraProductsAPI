@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using StreamServiceDataAccessLibrary.Context;
 
 namespace TuraProductsAPI.Services.PDF.Documents
 {
     public class InvoiceDocument : IDocument
     {
+        private Microsoft.Extensions.Logging.ILogger _logger { get; set; }
         public string DocumentNumber { get; set; }
         public DocumentType DocumentType { get; set; }
 
@@ -17,6 +20,11 @@ namespace TuraProductsAPI.Services.PDF.Documents
         {
             this.DocumentNumber = documentNumber;
             this.DocumentType = documentType;
+
+            //Temporary logger
+            var loggerFactory = Microsoft.Extensions.Logging.LoggerFactory.Create(builder => builder.AddSerilog());
+            var logger = loggerFactory.CreateLogger(string.Empty);
+            this._logger = logger;
         }
 
         public DocumentData? GetDocumentData()
@@ -40,6 +48,7 @@ namespace TuraProductsAPI.Services.PDF.Documents
                 catch (Exception ex)
                 {
                     //Log
+                    this._logger.LogError(ex.ToString());
                     return null;
                 }
             }

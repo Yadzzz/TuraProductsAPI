@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.IO.Compression;
+using System.Net;
 using System.Net.Http.Headers;
 using TuraProductsAPI.Services;
 
@@ -25,6 +26,8 @@ namespace TuraProductsAPI.Controllers
         [HttpGet("{documentNumber}/{type}")]
         public byte[]? Get(string documentNumber, string type)
         {
+            //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             return this._pdfService.GetDocumentData(documentNumber, type);
         }
     }
