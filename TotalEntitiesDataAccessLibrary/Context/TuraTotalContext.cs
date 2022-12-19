@@ -17,7 +17,6 @@ public partial class TuraTotalContext : DbContext
     {
     }
 
-   
     public virtual DbSet<Item> Items { get; set; }
 
     public virtual DbSet<ItemTranslation> ItemTranslations { get; set; }
@@ -335,6 +334,45 @@ public partial class TuraTotalContext : DbContext
             entity.Property(e => e.YourReference)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<SalesInvoiceLine>(entity =>
+        {
+            entity.HasKey(e => new { e.DocumentNo, e.LineNo }).HasName("Sales Invoice Line$0");
+
+            entity.ToTable("Sales Invoice Line");
+
+            entity.Property(e => e.DocumentNo)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("Document No_");
+            entity.Property(e => e.LineNo).HasColumnName("Line No_");
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Description2)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Description 2");
+            entity.Property(e => e.ItemCategoryCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Item Category Code");
+            entity.Property(e => e.No)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("No_");
+            entity.Property(e => e.OrderQuantity)
+                .HasColumnType("decimal(38, 20)")
+                .HasColumnName("Order Quantity");
+            entity.Property(e => e.Quantity).HasColumnType("decimal(38, 20)");
+            entity.Property(e => e.UnitPrice)
+                .HasColumnType("decimal(38, 20)")
+                .HasColumnName("Unit Price");
+            entity.Property(e => e.YourOrderNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Your Order No_");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -16,8 +16,4 @@
     <ProjectReference Include="..\TotalEntitiesDataAccessLibrary\TotalEntitiesDataAccessLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Invoice\" />
-  </ItemGroup>
-
 </Project>

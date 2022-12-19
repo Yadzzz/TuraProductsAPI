@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<TIDataDbContext>();
 builder.Services.AddScoped<PdfService>();
 builder.Services.AddScoped<ParcelService>();
+builder.Services.AddScoped<InvoiceService>();
 
 Log.Logger = new LoggerConfiguration()
 .Enrich.FromLogContext()
