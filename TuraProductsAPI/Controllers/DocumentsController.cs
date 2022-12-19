@@ -9,7 +9,7 @@ using TuraProductsAPI.Services;
 
 namespace TuraProductsAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/pdf")]
     [ApiController]
     public class DocumentsController : ControllerBase
     {

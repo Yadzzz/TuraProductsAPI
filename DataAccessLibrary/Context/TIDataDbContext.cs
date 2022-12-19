@@ -72,7 +72,7 @@ namespace DataAccessLibrary.Context
                     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                     .AddJsonFile("appsettings.json")
                     .Build();
-            
+
             if (!optionsBuilder.IsConfigured)
             {
                 //optionsBuilder.UseSqlServer("Data Source=LAPTOP-V6EKNDRG\\SQLEXPRESS;Initial Catalog=TI;Integrated Security=True;");

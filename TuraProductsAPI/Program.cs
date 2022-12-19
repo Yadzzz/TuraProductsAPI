@@ -15,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<TIDataDbContext>();
 builder.Services.AddScoped<PdfService>();
+builder.Services.AddScoped<ParcelService>();
 
 Log.Logger = new LoggerConfiguration()
 .Enrich.FromLogContext()
@@ -35,6 +36,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
