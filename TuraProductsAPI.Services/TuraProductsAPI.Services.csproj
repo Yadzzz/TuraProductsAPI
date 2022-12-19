@@ -14,4 +14,8 @@
     <ProjectReference Include="..\StreamServiceDataAccessLibrary\StreamServiceDataAccessLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Parcel\" />
+  </ItemGroup>
+
 </Project>

@@ -23,11 +23,9 @@ namespace TuraProductsAPI.Controllers
         }
 
         // GET api/<DocumentsController>/5/invoice
-        [HttpGet("{documentNumber}/{type}")]
+        [HttpGet("getdocumentbytes/{documentNumber}/{type}")]
         public byte[]? Get(string documentNumber, string type)
         {
-            //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
             return this._pdfService.GetDocumentData(documentNumber, type);
         }
     }

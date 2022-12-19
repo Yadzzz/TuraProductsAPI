@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuraProductsAPI", "TuraProd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLibrary", "DataAccessLibrary\DataAccessLibrary.csproj", "{4E6054A4-A2AD-419C-9D77-06A95C272E92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamServiceDataAccessLibrary", "StreamServiceDataAccessLibrary\StreamServiceDataAccessLibrary.csproj", "{616849A9-9969-40D2-859E-FA2BEF507889}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamServiceDataAccessLibrary", "StreamServiceDataAccessLibrary\StreamServiceDataAccessLibrary.csproj", "{616849A9-9969-40D2-859E-FA2BEF507889}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuraProductsAPI.Services", "TuraProductsAPI.Services\TuraProductsAPI.Services.csproj", "{69673A8F-A374-471F-A1AF-D230F37A3D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuraProductsAPI.Services", "TuraProductsAPI.Services\TuraProductsAPI.Services.csproj", "{69673A8F-A374-471F-A1AF-D230F37A3D9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TotalEntitiesDataAccessLibrary", "TotalEntitiesDataAccessLibrary\TotalEntitiesDataAccessLibrary.csproj", "{791CF42A-897D-4666-A123-A900D079DF3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{69673A8F-A374-471F-A1AF-D230F37A3D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69673A8F-A374-471F-A1AF-D230F37A3D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69673A8F-A374-471F-A1AF-D230F37A3D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{791CF42A-897D-4666-A123-A900D079DF3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{791CF42A-897D-4666-A123-A900D079DF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{791CF42A-897D-4666-A123-A900D079DF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{791CF42A-897D-4666-A123-A900D079DF3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
