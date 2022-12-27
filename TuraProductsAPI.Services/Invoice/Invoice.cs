@@ -96,10 +96,7 @@
             }
         }
 
-
-
-
-        public InvoiceHeaderResult GetInvoiceHeaders(string itemNo, string ean, string customerNo, string orderNo, string invoiceNo, string custOrderNo, DateTime startDate, DateTime endDate, int take, int skip, bool isCredit)
+        public InvoiceHeaderResult GetInvoiceHeaders(string itemNo, string ean, string customerNo, string orderNo, string invoiceNo, string custOrderNo, DateTime startDate, DateTime endDate, int take, int skip)
         {
             var result = new InvoiceHeaderResult();
 
@@ -107,8 +104,8 @@
             {
                 try
                 {
-                    var items = repo.GetInvoicesByItem(itemNo, ean, customerNo, orderNo, invoiceNo, custOrderNo, startDate, endDate, take, skip, isCredit);
-                    int total = repo.GetInvoicesByItem(itemNo, ean, customerNo, orderNo, invoiceNo, custOrderNo, startDate, endDate, 5000, 0, isCredit).Count();
+                    var items = repo.GetInvoicesByItem(itemNo, ean, customerNo, orderNo, invoiceNo, custOrderNo, startDate, endDate, take, skip);
+                    int total = repo.GetInvoicesByItem(itemNo, ean, customerNo, orderNo, invoiceNo, custOrderNo, startDate, endDate, 5000, 0).Count();
                     foreach (var item in items)
                     {
                         result.Items.Add(new InvoiceHeaderModel()

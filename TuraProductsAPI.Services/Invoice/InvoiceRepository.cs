@@ -59,6 +59,78 @@ namespace TuraProductsAPI.Services.Invoice
             }
         }
 
+        public IEnumerable<InvoiceHeader> GetInvoicesByItem(string itemNo, string ean, string customerNo, string orderNo, string invoiceNo, string custOrderNo, DateTime startDate, DateTime endDate, int take, int skip)
+        {
+            try
+            {
+                List<string> invoices = new List<string>();
+                if (itemNo != "0" || ean != "0" || custOrderNo != "0")
+                {
+                    var invoiceNr = (from s in this._totalContext.SalesInvoiceHeaders
+                                     join l in this._totalContext.SalesInvoiceLines
+                                     on s.No equals l.DocumentNo
+                                     join i in this._totalContext.Items
+                                     on l.No equals i.No
+                                     where (itemNo == "0" ? 1 == 1 : l.No == itemNo)
+                                     && (ean == "0" ? 1 == 1 : i.PrimaryEanCode == ean)
+                                     && (custOrderNo == "0" ? 1 == 1 : l.YourOrderNo == custOrderNo)
+                                     && s.SellToCustomerNo == customerNo
+                                     && l.Quantity > 0
+                                     select s.No).ToList();
+                    invoices = invoiceNr.Distinct().ToList();
+                    if (invoices.Count < 1)
+                    {
+                        return new List<InvoiceHeader>();
+                    }
+                }
+
+
+                var invoiceHeaders = (from s in this._totalContext.SalesInvoiceHeaders
+                                          //join l in context.Sales_Invoice_Line
+                                          //on s.No_ equals l.Document_No_
+                                          //join i in context.Item on l.No_ equals i.No_
+                                      orderby s.PostingDate descending
+                                      where s.SellToCustomerNo == customerNo
+                                      //&& (itemNo == "0" ? 1 == 1 : l.No_ == itemNo)
+                                      //&& (ean == "0" ? 1 == 1 : i.Primary_EAN_Code == ean)
+                                      && (orderNo == "0" ? 1 == 1 : s.OrderNo == orderNo)
+                                      && (invoiceNo == "0" ? 1 == 1 : s.No == invoiceNo)
+                                      && s.PostingDate >= startDate
+                                      && s.PostingDate <= endDate
+                                      && (invoices.Count == 0 ? 1 == 1 : invoices.Contains(s.No))
+                                      //&& (customerNo == "0" ? 1 == 1 :  == customerNo) Finns inte med i tabellen än, men den kommer
+                                      select new InvoiceHeader()
+                                      {
+                                          CustomerNumber = s.SellToCustomerNo,
+                                          //Ean = i.Primary_EAN_Code,
+                                          InvoiceDate = s.PostingDate,
+                                          InvoiceNumber = s.No,
+                                          //ItemNumber = i.No_,
+                                          OrderDate = s.OrderDate,
+                                          OrderNumber = s.OrderNo,
+                                          IsPayed = s.IsOpen.HasValue ? !s.IsOpen.Value : false,
+                                          DueDate = s.DueDate.HasValue ? s.DueDate.Value : DateTime.MinValue,
+                                          CustomerOrderNumber = s.YourOrderNo,
+                                          Currency = s.CurrencyCode,
+                                          InvoiceTotalAmountIncVAT = s.AmountInclVat.HasValue ? s.AmountInclVat.Value : 0,
+                                          InvoiceTotalAmount = s.AmountInclVat.Value
+                                      }).Skip(skip).Take(take).ToList();
+
+                return invoiceHeaders;
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
         public IEnumerable<InvoiceHeader> GetInvoicesByItem(string itemNo, string ean, string customerNo, string orderNo, string invoiceNo, string custOrderNo, DateTime startDate, DateTime endDate, int take, int skip, bool isCretit)
         {
             try
