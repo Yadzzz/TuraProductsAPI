@@ -33,9 +33,17 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
 
                         if (shipmentUpdate != null)
                         {
+                            shipmentModel.ShipmentUpdate = shipmentUpdate;
+
                             if (shipmentUpdate.StatusId != 4)
                             {
                                 var shipmentDeviation = await context.ShipmentDeviations.Where(x => x.ShipmentId == shipment.Id).FirstOrDefaultAsync();
+
+                                if(shipmentDeviation != null)
+                                {
+                                    shipmentModel.ShipmentDeviation = shipmentDeviation;
+                                }
+
                                 shipmentModels.Add(shipmentModel);
                             }
                         }
@@ -44,6 +52,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 return BadRequest(ex.ToString());
             }
 

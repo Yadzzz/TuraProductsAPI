@@ -6,6 +6,7 @@ namespace TuraProductsAPI.Models.Shipments
     {
         public Shipment Shipment { get; set; }
         public ShipmentDeviation ShipmentDeviation { get; set; }
+        public ShipmentUpdate ShipmentUpdate { get; set; }
         //public IEnumerable<ShipmentUpdate> ShipmentUpdate { get; set; }
     }
 }
