@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamServiceDataAccessLibr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuraProductsAPI.Services", "TuraProductsAPI.Services\TuraProductsAPI.Services.csproj", "{69673A8F-A374-471F-A1AF-D230F37A3D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TotalEntitiesDataAccessLibrary", "TotalEntitiesDataAccessLibrary\TotalEntitiesDataAccessLibrary.csproj", "{791CF42A-897D-4666-A123-A900D079DF3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TotalEntitiesDataAccessLibrary", "TotalEntitiesDataAccessLibrary\TotalEntitiesDataAccessLibrary.csproj", "{791CF42A-897D-4666-A123-A900D079DF3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntranetDataAccessLibrary", "IntranetDataAccessLibrary\IntranetDataAccessLibrary.csproj", "{8C95683F-0DCC-400D-A4C0-16CD58234525}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{791CF42A-897D-4666-A123-A900D079DF3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{791CF42A-897D-4666-A123-A900D079DF3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{791CF42A-897D-4666-A123-A900D079DF3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C95683F-0DCC-400D-A4C0-16CD58234525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C95683F-0DCC-400D-A4C0-16CD58234525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C95683F-0DCC-400D-A4C0-16CD58234525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C95683F-0DCC-400D-A4C0-16CD58234525}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

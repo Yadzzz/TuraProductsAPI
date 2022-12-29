@@ -16,4 +16,8 @@
     <ProjectReference Include="..\TotalEntitiesDataAccessLibrary\TotalEntitiesDataAccessLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Intranet\" />
+  </ItemGroup>
+
 </Project>
