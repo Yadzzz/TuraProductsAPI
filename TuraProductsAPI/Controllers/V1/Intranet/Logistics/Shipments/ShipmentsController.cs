@@ -52,7 +52,6 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
                 return BadRequest(ex.ToString());
             }
 

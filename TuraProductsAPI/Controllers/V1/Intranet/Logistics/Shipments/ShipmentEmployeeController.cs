@@ -9,7 +9,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
 {
     [Route("api/v1/intranet/logistics/shipments/[controller]")]
     [ApiController]
-    public class ShipmentEmployee : ControllerBase
+    public class ShipmentEmployeeController : ControllerBase
     {
         // GET: api/<ShipmentEmployee>
         [HttpGet]
@@ -26,7 +26,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
             }
             catch (Exception ex)
             {
-
+                return BadRequest(ex.ToString());
             }
 
             return employees;
@@ -52,7 +52,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
             }
             catch (Exception ex)
             {
-
+                return NotFound(ex.ToString());
             }
 
             return employee;

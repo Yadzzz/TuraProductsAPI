@@ -25,7 +25,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
             }
             catch (Exception ex)
             {
-
+                return BadRequest(ex.ToString());
             }
 
             return companies;
@@ -51,7 +51,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
             }
             catch (Exception ex)
             {
-
+                return NotFound(ex.ToString());
             }
 
             return employee;
