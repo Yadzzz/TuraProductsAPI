@@ -12,4 +12,6 @@ public partial class SwitchPort
     public string? AssignedTo { get; set; }
 
     public int NetworkSwitchId { get; set; }
+
+    public virtual NetworkSwitch NetworkSwitch { get; set; } = null!;
 }

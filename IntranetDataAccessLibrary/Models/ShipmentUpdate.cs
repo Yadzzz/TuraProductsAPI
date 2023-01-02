@@ -16,4 +16,10 @@ public partial class ShipmentUpdate
     public string? Note { get; set; }
 
     public int StatusId { get; set; }
+
+    public virtual Shipment Shipment { get; set; } = null!;
+
+    public virtual ShipmentStatus Status { get; set; } = null!;
+
+    public virtual ShipmentEmployee? UpdatedByNavigation { get; set; }
 }

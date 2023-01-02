@@ -26,4 +26,6 @@ public partial class ShipmentDeviation
     public bool? TaggedMixedBoxes { get; set; }
 
     public string? Note { get; set; }
+
+    public virtual Shipment Shipment { get; set; } = null!;
 }

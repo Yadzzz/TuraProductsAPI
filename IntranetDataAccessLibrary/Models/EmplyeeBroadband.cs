@@ -22,4 +22,6 @@ public partial class EmplyeeBroadband
     public string? HardwareSn { get; set; }
 
     public int Antal { get; set; }
+
+    public virtual Employee AntalNavigation { get; set; } = null!;
 }

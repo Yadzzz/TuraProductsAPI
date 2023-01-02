@@ -15,7 +15,7 @@ public partial class InfoMessage
 
     public string? BackgroundColor { get; set; }
 
-    public bool Active { get; set; }
+    public bool? Active { get; set; }
 
     public DateTime Updated { get; set; }
 }

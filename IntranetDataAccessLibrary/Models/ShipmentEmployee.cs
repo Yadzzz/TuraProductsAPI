@@ -12,4 +12,10 @@ public partial class ShipmentEmployee
     public string LastName { get; set; } = null!;
 
     public bool IsDeleted { get; set; }
+
+    public virtual ICollection<Shipment> ShipmentInitatedByNavigations { get; } = new List<Shipment>();
+
+    public virtual ICollection<Shipment> ShipmentReceivedByNavigations { get; } = new List<Shipment>();
+
+    public virtual ICollection<ShipmentUpdate> ShipmentUpdates { get; } = new List<ShipmentUpdate>();
 }

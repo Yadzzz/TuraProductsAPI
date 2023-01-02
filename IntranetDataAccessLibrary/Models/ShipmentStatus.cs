@@ -8,4 +8,6 @@ public partial class ShipmentStatus
     public int Id { get; set; }
 
     public string? StatusName { get; set; }
+
+    public virtual ICollection<ShipmentUpdate> ShipmentUpdates { get; } = new List<ShipmentUpdate>();
 }

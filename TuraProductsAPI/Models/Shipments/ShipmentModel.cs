@@ -1,12 +1,10 @@
-﻿using IntranetDataAccessLibrary.Models;
-
-namespace TuraProductsAPI.Models.Shipments
+﻿namespace TuraProductsAPI.Models.Shipments
 {
     public class ShipmentModel
     {
-        public Shipment Shipment { get; set; }
-        public ShipmentDeviation ShipmentDeviation { get; set; }
-        public ShipmentUpdate ShipmentUpdate { get; set; }
-        //public IEnumerable<ShipmentUpdate> ShipmentUpdate { get; set; }
+        public ShipmentData? Shipment { get; set; }
+        public ShipmentDeviationData? ShipmentDeviation { get; set; }
+        public ShipmentUpdateData? ShipmentUpdate { get; set; }
+        public List<ShipmentUpdateData>? ShipmentUpdates { get; set; }
     }
 }

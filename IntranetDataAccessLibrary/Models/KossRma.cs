@@ -42,4 +42,8 @@ public partial class KossRma
     public DateTime? ReplyDate { get; set; }
 
     public string Country { get; set; } = null!;
+
+    public virtual KossHeadphoneModel KossModel { get; set; } = null!;
+
+    public virtual KossRmaMessage? ReplyMessage { get; set; }
 }

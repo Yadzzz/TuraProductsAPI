@@ -26,4 +26,14 @@ public partial class Shipment
     public string? Supplier { get; set; }
 
     public bool? Prioritized { get; set; }
+
+    public virtual ShipmentEmployee? InitatedByNavigation { get; set; }
+
+    public virtual ShipmentEmployee? ReceivedByNavigation { get; set; }
+
+    public virtual ShipmentReceivingCompany? ReceivingCompanyNavigation { get; set; }
+
+    public virtual ShipmentDeviation? ShipmentDeviation { get; set; }
+
+    public virtual ICollection<ShipmentUpdate> ShipmentUpdates { get; } = new List<ShipmentUpdate>();
 }

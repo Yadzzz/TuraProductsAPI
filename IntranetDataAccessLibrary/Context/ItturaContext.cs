@@ -24,8 +24,6 @@ public partial class ItturaContext : DbContext
 
     public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
 
-    public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
-
     public virtual DbSet<Categorytemp> Categorytemps { get; set; }
 
     public virtual DbSet<ChangeLog> ChangeLogs { get; set; }
@@ -44,8 +42,6 @@ public partial class ItturaContext : DbContext
 
     public virtual DbSet<HardWareComputer> HardWareComputers { get; set; }
 
-    public virtual DbSet<HardWareInfo> HardWareInfos { get; set; }
-
     public virtual DbSet<InfoMessage> InfoMessages { get; set; }
 
     public virtual DbSet<Ipnassjo> Ipnassjos { get; set; }
@@ -59,8 +55,6 @@ public partial class ItturaContext : DbContext
     public virtual DbSet<Lan> Lans { get; set; }
 
     public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
-
-    public virtual DbSet<Myportum> Myporta { get; set; }
 
     public virtual DbSet<Network> Networks { get; set; }
 
@@ -98,8 +92,6 @@ public partial class ItturaContext : DbContext
 
     public virtual DbSet<SwitchPort> SwitchPorts { get; set; }
 
-    public virtual DbSet<Sysdiagram> Sysdiagrams { get; set; }
-
     public virtual DbSet<Telium> Telia { get; set; }
 
     public virtual DbSet<VmotionNet> VmotionNets { get; set; }
@@ -112,11 +104,11 @@ public partial class ItturaContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Finnish_Swedish_100_CI_AS");
+        modelBuilder.UseCollation("Finnish_Swedish_CI_AS");
 
         modelBuilder.Entity<AspNetRole>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id).HasName("PK_dbo.AspNetRoles");
 
             entity.Property(e => e.Id).HasMaxLength(128);
             entity.Property(e => e.Name).HasMaxLength(256);
@@ -124,45 +116,61 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<AspNetUser>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id).HasName("PK_dbo.AspNetUsers");
 
-            entity.Property(e => e.Email).HasMaxLength(256);
             entity.Property(e => e.Id).HasMaxLength(128);
+            entity.Property(e => e.Email).HasMaxLength(256);
             entity.Property(e => e.LockoutEndDateUtc).HasColumnType("datetime");
             entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AspNetUserRole",
+                    r => r.HasOne<AspNetRole>().WithMany()
+                        .HasForeignKey("RoleId")
+                        .HasConstraintName("FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId"),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId").HasName("PK_dbo.AspNetUserRoles");
+                    });
         });
 
         modelBuilder.Entity<AspNetUserClaim>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id).HasName("PK_dbo.AspNetUserClaims");
 
             entity.Property(e => e.UserId).HasMaxLength(128);
+
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserClaims)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId");
         });
 
         modelBuilder.Entity<AspNetUserLogin>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => new { e.LoginProvider, e.ProviderKey, e.UserId }).HasName("PK_dbo.AspNetUserLogins");
 
             entity.Property(e => e.LoginProvider).HasMaxLength(128);
             entity.Property(e => e.ProviderKey).HasMaxLength(128);
             entity.Property(e => e.UserId).HasMaxLength(128);
-        });
 
-        modelBuilder.Entity<AspNetUserRole>(entity =>
-        {
-            entity.HasNoKey();
-
-            entity.Property(e => e.RoleId).HasMaxLength(128);
-            entity.Property(e => e.UserId).HasMaxLength(128);
+            entity.HasOne(d => d.User).WithMany(p => p.AspNetUserLogins)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId");
         });
 
         modelBuilder.Entity<Categorytemp>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("categorytemp");
+            entity.HasKey(e => e.Enovaid);
 
-            entity.Property(e => e.Enovaid).HasColumnName("enovaid");
+            entity.ToTable("categorytemp");
+
+            entity.Property(e => e.Enovaid)
+                .ValueGeneratedNever()
+                .HasColumnName("enovaid");
             entity.Property(e => e.NameDa)
                 .HasMaxLength(300)
                 .HasColumnName("name_da");
@@ -198,9 +206,7 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<ChangeLog>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ChangeLog");
+            entity.ToTable("ChangeLog");
 
             entity.Property(e => e.Employee).HasMaxLength(100);
             entity.Property(e => e.LoggedAt).HasColumnType("datetime");
@@ -211,9 +217,7 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<Claim>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Claim");
+            entity.ToTable("Claim");
 
             entity.Property(e => e.AmountIn).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.AmountOut).HasColumnType("decimal(18, 0)");
@@ -231,9 +235,9 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<Dmz>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("DMZ");
+            entity.HasKey(e => e.Ipaddress).HasName("PK_DMZ$");
+
+            entity.ToTable("DMZ");
 
             entity.Property(e => e.Ipaddress)
                 .HasMaxLength(20)
@@ -248,14 +252,12 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<Dn>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("DNS");
+            entity.ToTable("DNS");
 
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Host)
                 .HasMaxLength(255)
                 .HasColumnName("HOST");
-            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.TdcDestination)
                 .HasMaxLength(255)
                 .HasColumnName("TDC DESTINATION");
@@ -269,9 +271,9 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Employee");
+            entity.HasKey(e => e.Antal).HasName("PK_Personallista");
+
+            entity.ToTable("Employee");
 
             entity.Property(e => e.AnstForm).HasMaxLength(100);
             entity.Property(e => e.Anställd).HasColumnType("datetime");
@@ -287,10 +289,11 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<EmplyeeBroadband>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("EmplyeeBroadband");
+            entity.HasKey(e => e.Antal);
 
+            entity.ToTable("EmplyeeBroadband");
+
+            entity.Property(e => e.Antal).ValueGeneratedNever();
             entity.Property(e => e.HardwareSn)
                 .HasMaxLength(50)
                 .HasColumnName("HardwareSN");
@@ -306,66 +309,49 @@ public partial class ItturaContext : DbContext
             entity.Property(e => e.Supplier)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.AntalNavigation).WithOne(p => p.EmplyeeBroadband)
+                .HasForeignKey<EmplyeeBroadband>(d => d.Antal)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EmplyeeBroadband_Employee");
         });
 
         modelBuilder.Entity<HardWare>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("HardWare");
+            entity.ToTable("HardWare");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(20);
             entity.Property(e => e.Type).HasMaxLength(50);
         });
 
         modelBuilder.Entity<HardWareComputer>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("HardWareComputer");
+            entity.HasKey(e => e.Id).HasName("PK_datorer");
 
+            entity.ToTable("HardWareComputer");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.ComputerModel).HasMaxLength(100);
             entity.Property(e => e.ComputerName).HasMaxLength(50);
             entity.Property(e => e.ComputerType).HasMaxLength(50);
             entity.Property(e => e.Delivered).HasColumnType("datetime");
-            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Misc).HasMaxLength(100);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Profile).HasMaxLength(50);
             entity.Property(e => e.UserName).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<HardWareInfo>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("HardWareInfo");
-
-            entity.Property(e => e.Cpu)
-                .HasMaxLength(50)
-                .HasColumnName("CPU");
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Interface).HasMaxLength(50);
-            entity.Property(e => e.InterfaceIp)
-                .HasMaxLength(15)
-                .HasColumnName("InterfaceIP");
-            entity.Property(e => e.Location).HasMaxLength(50);
-            entity.Property(e => e.MachineModel).HasMaxLength(50);
-            entity.Property(e => e.Memory).HasMaxLength(50);
-            entity.Property(e => e.Os)
-                .HasMaxLength(50)
-                .HasColumnName("OS");
-            entity.Property(e => e.PortRedundancy).HasMaxLength(25);
-            entity.Property(e => e.Switch).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<InfoMessage>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("InfoMessage");
+            entity.ToTable("InfoMessage");
 
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Active)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
             entity.Property(e => e.BackgroundColor)
                 .HasMaxLength(10)
                 .IsFixedLength();
@@ -373,25 +359,28 @@ public partial class ItturaContext : DbContext
                 .HasMaxLength(10)
                 .IsFixedLength();
             entity.Property(e => e.Header).HasMaxLength(200);
-            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Message)
                 .HasMaxLength(500)
                 .IsFixedLength();
-            entity.Property(e => e.Updated).HasColumnType("datetime");
+            entity.Property(e => e.Updated)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Ipnassjo>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("IPNassjo");
+            entity.HasKey(e => e.Ipaddress).HasName("PK_IP_Nassjo");
 
-            entity.Property(e => e.Info)
-                .HasMaxLength(255)
-                .HasColumnName("INFO");
+            entity.ToTable("IPNassjo");
+
+            entity.HasIndex(e => e.Ipaddress, "IP").IsUnique();
+
             entity.Property(e => e.Ipaddress)
                 .HasMaxLength(15)
                 .HasColumnName("IPAddress");
+            entity.Property(e => e.Info)
+                .HasMaxLength(255)
+                .HasColumnName("INFO");
             entity.Property(e => e.Service)
                 .HasMaxLength(255)
                 .HasColumnName("SERVICE");
@@ -399,18 +388,14 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<KossHeadphoneModel>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("KossHeadphoneModel");
+            entity.ToTable("KossHeadphoneModel");
 
             entity.Property(e => e.Name).HasMaxLength(150);
         });
 
         modelBuilder.Entity<KossRma>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("KossRma");
+            entity.ToTable("KossRma");
 
             entity.Property(e => e.City).HasMaxLength(50);
             entity.Property(e => e.CoAddress).HasMaxLength(100);
@@ -427,13 +412,20 @@ public partial class ItturaContext : DbContext
             entity.Property(e => e.StreetAddress).HasMaxLength(100);
             entity.Property(e => e.Vendor).HasMaxLength(160);
             entity.Property(e => e.Zipcode).HasMaxLength(10);
+
+            entity.HasOne(d => d.KossModel).WithMany(p => p.KossRmas)
+                .HasForeignKey(d => d.KossModelId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_KossRma_KossHeadphoneModel");
+
+            entity.HasOne(d => d.ReplyMessage).WithMany(p => p.KossRmas)
+                .HasForeignKey(d => d.ReplyMessageId)
+                .HasConstraintName("FK_KossRma_KossRmaMessage");
         });
 
         modelBuilder.Entity<KossRmaMessage>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("KossRmaMessage");
+            entity.ToTable("KossRmaMessage");
 
             entity.Property(e => e.Country).HasMaxLength(3);
             entity.Property(e => e.Description).HasMaxLength(100);
@@ -442,16 +434,18 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<Lan>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("LAN");
+            entity.HasKey(e => e.Ipaddress);
 
-            entity.Property(e => e.Info)
-                .HasMaxLength(50)
-                .HasColumnName("INFO");
+            entity.ToTable("LAN");
+
+            entity.HasIndex(e => e.Ipaddress, "IX_LAN");
+
             entity.Property(e => e.Ipaddress)
                 .HasMaxLength(15)
                 .HasColumnName("IPAddress");
+            entity.Property(e => e.Info)
+                .HasMaxLength(50)
+                .HasColumnName("INFO");
             entity.Property(e => e.Service)
                 .HasMaxLength(50)
                 .HasColumnName("SERVICE");
@@ -459,27 +453,18 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<MigrationHistory>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("__MigrationHistory");
+            entity.HasKey(e => new { e.MigrationId, e.ContextKey }).HasName("PK_dbo.__MigrationHistory");
 
-            entity.Property(e => e.ContextKey).HasMaxLength(300);
+            entity.ToTable("__MigrationHistory");
+
             entity.Property(e => e.MigrationId).HasMaxLength(150);
+            entity.Property(e => e.ContextKey).HasMaxLength(300);
             entity.Property(e => e.ProductVersion).HasMaxLength(32);
-        });
-
-        modelBuilder.Entity<Myportum>(entity =>
-        {
-            entity.HasNoKey();
-
-            entity.Property(e => e.Tkey).HasColumnName("TKEY");
         });
 
         modelBuilder.Entity<Network>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Network");
+            entity.ToTable("Network");
 
             entity.Property(e => e.Address).HasMaxLength(20);
             entity.Property(e => e.NetworkName).HasMaxLength(50);
@@ -489,68 +474,70 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<NetworkIp>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("NetworkIP");
+            entity.ToTable("NetworkIP");
 
-            entity.Property(e => e.AssignedTo).HasMaxLength(100);
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.AssignedTo).HasMaxLength(100);
             entity.Property(e => e.Info).HasMaxLength(100);
             entity.Property(e => e.Ip1).HasColumnName("ip_1");
             entity.Property(e => e.Ip2).HasColumnName("ip_2");
             entity.Property(e => e.Ip3).HasColumnName("ip_3");
             entity.Property(e => e.Ip4).HasColumnName("ip_4");
+
+            entity.HasOne(d => d.Network).WithMany(p => p.NetworkIps)
+                .HasForeignKey(d => d.NetworkId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NetworkIP_Network");
         });
 
         modelBuilder.Entity<NetworkLocation>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("NetworkLocation");
+            entity.ToTable("NetworkLocation");
 
             entity.Property(e => e.Location).HasMaxLength(50);
         });
 
         modelBuilder.Entity<NetworkSwitch>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("NetworkSwitch");
+            entity.ToTable("NetworkSwitch");
 
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Placement).HasMaxLength(50);
+
+            entity.HasOne(d => d.Location).WithMany(p => p.NetworkSwitches)
+                .HasForeignKey(d => d.LocationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NetworkSwitch_NetworkLocation");
         });
 
         modelBuilder.Entity<NfsNet>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("NFS_NET");
+            entity.HasKey(e => e.Ipaddress);
 
-            entity.Property(e => e.Appliance).HasMaxLength(255);
-            entity.Property(e => e.Interface).HasMaxLength(255);
+            entity.ToTable("NFS_NET");
+
             entity.Property(e => e.Ipaddress)
                 .HasMaxLength(15)
                 .HasColumnName("IPAddress");
+            entity.Property(e => e.Appliance).HasMaxLength(255);
+            entity.Property(e => e.Interface).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Passwd>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Passwd");
+            entity.ToTable("Passwd");
 
-            entity.Property(e => e.Appliance).HasMaxLength(50);
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Appliance).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Username).HasMaxLength(50);
         });
 
         modelBuilder.Entity<RmaInformation>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("RMA_information");
+            entity.HasKey(e => e.Id).HasName("PK_RMA_information_1");
+
+            entity.ToTable("RMA_information");
 
             entity.Property(e => e.ItemNumber).HasMaxLength(50);
             entity.Property(e => e.Rmainfo).HasColumnName("RMAInfo");
@@ -558,17 +545,15 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<San>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("SAN");
+            entity.ToTable("SAN");
 
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Bmc)
                 .HasMaxLength(50)
                 .HasColumnName("BMC");
             entity.Property(e => e.HardwareType)
                 .HasMaxLength(50)
                 .HasColumnName("Hardware type");
-            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.IfE0a)
                 .HasMaxLength(50)
                 .HasColumnName("if_e0a");
@@ -583,9 +568,9 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<SanNet>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("SAN_NET");
+            entity.HasKey(e => e.Ipaddress);
+
+            entity.ToTable("SAN_NET");
 
             entity.Property(e => e.Ipaddress)
                 .HasMaxLength(255)
@@ -600,28 +585,48 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<Shipment>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.Id).HasName("PK_RecievedShipments");
 
             entity.Property(e => e.OrderNumbers).HasMaxLength(1000);
             entity.Property(e => e.Placement).HasMaxLength(300);
-            entity.Property(e => e.ReceivedAt).HasColumnType("datetime");
+            entity.Property(e => e.ReceivedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.Supplier).HasMaxLength(200);
+
+            entity.HasOne(d => d.InitatedByNavigation).WithMany(p => p.ShipmentInitatedByNavigations)
+                .HasForeignKey(d => d.InitatedBy)
+                .HasConstraintName("FK_RecievedShipments_ShipmentReceivingStaff1");
+
+            entity.HasOne(d => d.ReceivedByNavigation).WithMany(p => p.ShipmentReceivedByNavigations)
+                .HasForeignKey(d => d.ReceivedBy)
+                .HasConstraintName("FK_RecievedShipments_ShipmentReceivingStaff");
+
+            entity.HasOne(d => d.ReceivingCompanyNavigation).WithMany(p => p.Shipments)
+                .HasForeignKey(d => d.ReceivingCompany)
+                .HasConstraintName("FK_RecievedShipments_ShipmentReceivers");
         });
 
         modelBuilder.Entity<ShipmentDeviation>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ShipmentDeviation");
+            entity.HasKey(e => e.ShipmentId).HasName("PK_ShipmentDeviation_1");
 
+            entity.ToTable("ShipmentDeviation");
+
+            entity.Property(e => e.ShipmentId).ValueGeneratedNever();
             entity.Property(e => e.Note).HasMaxLength(500);
+
+            entity.HasOne(d => d.Shipment).WithOne(p => p.ShipmentDeviation)
+                .HasForeignKey<ShipmentDeviation>(d => d.ShipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShipmentDeviation_Shipments");
         });
 
         modelBuilder.Entity<ShipmentEmployee>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ShipmentEmployee");
+            entity.HasKey(e => e.Id).HasName("PK_OrderReceivers");
+
+            entity.ToTable("ShipmentEmployee");
 
             entity.Property(e => e.FirstName).HasMaxLength(100);
             entity.Property(e => e.LastName).HasMaxLength(100);
@@ -629,38 +634,50 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<ShipmentReceivingCompany>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ShipmentReceivingCompany");
+            entity.HasKey(e => e.Id).HasName("PK_ShipmentReceivers");
+
+            entity.ToTable("ShipmentReceivingCompany");
 
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ShipmentStatus>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ShipmentStatus");
+            entity.HasKey(e => e.Id).HasName("PK_ReceivedShipmnetStatus");
+
+            entity.ToTable("ShipmentStatus");
 
             entity.Property(e => e.StatusName).HasMaxLength(100);
         });
 
         modelBuilder.Entity<ShipmentUpdate>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("ShipmentUpdate");
+            entity.HasKey(e => e.Id).HasName("PK_Table_1");
+
+            entity.ToTable("ShipmentUpdate");
 
             entity.Property(e => e.Note).HasMaxLength(300);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Shipment).WithMany(p => p.ShipmentUpdates)
+                .HasForeignKey(d => d.ShipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReceivedShipmentUpdate_RecievedShipments");
+
+            entity.HasOne(d => d.Status).WithMany(p => p.ShipmentUpdates)
+                .HasForeignKey(d => d.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ReceivedShipmentUpdate_ReceivedShipmnetStatus");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ShipmentUpdates)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("FK_ReceivedShipmentUpdate_ShipmentReceivingStaff");
         });
 
         modelBuilder.Entity<SoftwareLicense>(entity =>
         {
-            entity.HasNoKey();
-
-            entity.Property(e => e.Företag).HasMaxLength(255);
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Företag).HasMaxLength(255);
             entity.Property(e => e.Leverantör).HasMaxLength(255);
             entity.Property(e => e.Media).HasMaxLength(255);
             entity.Property(e => e.Mjukvara).HasMaxLength(255);
@@ -672,9 +689,7 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<SpecialCustomer>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("SpecialCustomer");
+            entity.ToTable("SpecialCustomer");
 
             entity.Property(e => e.CustomerNumber).HasMaxLength(20);
             entity.Property(e => e.ResponsibleSalesPerson).HasMaxLength(20);
@@ -683,37 +698,23 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<SwitchPort>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("SwitchPort");
+            entity.ToTable("SwitchPort");
 
             entity.Property(e => e.AssignedTo).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
-        });
 
-        modelBuilder.Entity<Sysdiagram>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("sysdiagrams");
-
-            entity.Property(e => e.Definition).HasColumnName("definition");
-            entity.Property(e => e.DiagramId).HasColumnName("diagram_id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(128)
-                .HasColumnName("name");
-            entity.Property(e => e.PrincipalId).HasColumnName("principal_id");
-            entity.Property(e => e.Version).HasColumnName("version");
+            entity.HasOne(d => d.NetworkSwitch).WithMany(p => p.SwitchPorts)
+                .HasForeignKey(d => d.NetworkSwitchId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SwitchPort_NetworkSwitch");
         });
 
         modelBuilder.Entity<Telium>(entity =>
         {
-            entity.HasNoKey();
-
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.CiscoInt)
                 .HasMaxLength(255)
                 .HasColumnName("CISCO INT");
-            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Interface)
                 .HasMaxLength(255)
                 .HasColumnName("INTERFACE");
@@ -724,22 +725,20 @@ public partial class ItturaContext : DbContext
 
         modelBuilder.Entity<VmotionNet>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("VMotion_net");
+            entity.HasKey(e => e.Ipaddress);
 
-            entity.Property(e => e.Appliance).HasMaxLength(255);
-            entity.Property(e => e.Interface).HasMaxLength(255);
+            entity.ToTable("VMotion_net");
+
             entity.Property(e => e.Ipaddress)
                 .HasMaxLength(15)
                 .HasColumnName("IPAddress");
+            entity.Property(e => e.Appliance).HasMaxLength(255);
+            entity.Property(e => e.Interface).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Wan>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("WAN");
+            entity.ToTable("WAN");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Ipaddress)

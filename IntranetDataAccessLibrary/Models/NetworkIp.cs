@@ -20,4 +20,6 @@ public partial class NetworkIp
     public string? Info { get; set; }
 
     public int NetworkId { get; set; }
+
+    public virtual Network Network { get; set; } = null!;
 }

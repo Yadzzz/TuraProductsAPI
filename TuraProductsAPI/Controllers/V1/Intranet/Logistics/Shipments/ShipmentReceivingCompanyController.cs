@@ -35,7 +35,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
         [HttpGet("{id}")]
         public async Task<ActionResult<string>> Get(int id)
         {
-            string employee = string.Empty;
+            string company = string.Empty;
 
             try
             {
@@ -45,7 +45,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
 
                     if (comp != null)
                     {
-                        employee = comp.Name;
+                        company = comp.Name;
                     }
                 }
             }
@@ -54,7 +54,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
                 return NotFound(ex.ToString());
             }
 
-            return employee;
+            return company;
         }
     }
 }

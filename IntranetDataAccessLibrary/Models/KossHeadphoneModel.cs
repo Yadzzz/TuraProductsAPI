@@ -10,4 +10,6 @@ public partial class KossHeadphoneModel
     public string Name { get; set; } = null!;
 
     public bool Disabled { get; set; }
+
+    public virtual ICollection<KossRma> KossRmas { get; } = new List<KossRma>();
 }

@@ -14,4 +14,6 @@ public partial class Network
     public string? SubnetAddress { get; set; }
 
     public string? VlanId { get; set; }
+
+    public virtual ICollection<NetworkIp> NetworkIps { get; } = new List<NetworkIp>();
 }

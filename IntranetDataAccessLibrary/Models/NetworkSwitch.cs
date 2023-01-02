@@ -12,4 +12,8 @@ public partial class NetworkSwitch
     public int LocationId { get; set; }
 
     public string? Placement { get; set; }
+
+    public virtual NetworkLocation Location { get; set; } = null!;
+
+    public virtual ICollection<SwitchPort> SwitchPorts { get; } = new List<SwitchPort>();
 }

@@ -28,4 +28,6 @@ public partial class Employee
     public string? Arbetsställe { get; set; }
 
     public string? Kön { get; set; }
+
+    public virtual EmplyeeBroadband? EmplyeeBroadband { get; set; }
 }

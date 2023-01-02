@@ -12,4 +12,6 @@ public partial class KossRmaMessage
     public string Country { get; set; } = null!;
 
     public string Description { get; set; } = null!;
+
+    public virtual ICollection<KossRma> KossRmas { get; } = new List<KossRma>();
 }

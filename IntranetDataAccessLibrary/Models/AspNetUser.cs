@@ -28,4 +28,10 @@ public partial class AspNetUser
     public int AccessFailedCount { get; set; }
 
     public string UserName { get; set; } = null!;
+
+    public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; } = new List<AspNetUserClaim>();
+
+    public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; } = new List<AspNetUserLogin>();
+
+    public virtual ICollection<AspNetRole> Roles { get; } = new List<AspNetRole>();
 }

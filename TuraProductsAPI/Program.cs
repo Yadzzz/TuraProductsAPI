@@ -3,6 +3,9 @@ using DataAccessLibrary.Context;
 using Serilog;
 using TuraProductsAPI.Services;
 using System.Net;
+using Newtonsoft;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
