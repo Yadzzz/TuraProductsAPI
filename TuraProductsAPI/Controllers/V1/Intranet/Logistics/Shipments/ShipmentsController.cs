@@ -61,7 +61,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
                                 StatusId = shipmentUpdate.StatusId
                             };
 
-                            foreach(var update in shipmentUpdates)
+                            foreach (var update in shipmentUpdates)
                             {
                                 var updateModel = new ShipmentUpdateData
                                 {
@@ -115,9 +115,42 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
 
         // POST api/<ShipmentsController>
         [HttpPost]
-        public void Post([FromBody] ShipmentModel shipmentModel)
+        public async Task Post([FromBody] ShipmentModel shipmentModel)
         {
+            try
+            {
+                using (var context = new IntranetDataAccessLibrary.Context.ItturaContext())
+                {
+                    var shipment = new Shipment();
+                    shipment.ReceivedBy = shipmentModel.Shipment.ReceivedBy;
+                    shipment.ReceivingCompany = shipmentModel.Shipment.ReceivingCompany;
+                    shipment.Supplier = shipmentModel.Shipment.Supplier;
+                    shipment.OrderNumbers = shipmentModel.Shipment.OrderNumbers;
+                    shipment.NumberOfPallets = shipmentModel.Shipment.NumberOfPallets;
+                    shipment.NumberOfPackages = shipmentModel.Shipment.NumberOfPackages;
+                    shipment.Placement = shipmentModel.Shipment.Placement;
+                    shipment.Prioritized = shipmentModel.Shipment.Prioritized;
+                    shipment.InitatedBy = shipmentModel.Shipment.InitatedBy;
 
+                    await context.Shipments.AddAsync(shipment);
+                    await context.SaveChangesAsync();
+
+                    await context.ShipmentUpdates.AddAsync(new ShipmentUpdate()
+                    {
+                        ShipmentId = shipment.Id,
+                        UpdatedBy = shipmentModel.ShipmentUpdate.UpdatedBy,
+                        UpdatedAt = shipmentModel.ShipmentUpdate.UpdatedAt,
+                        StatusId = shipmentModel.ShipmentUpdate.StatusId,
+                        Note = shipmentModel.ShipmentUpdate.Note
+                    });
+
+                    await context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         // PUT api/<ShipmentsController>/5
