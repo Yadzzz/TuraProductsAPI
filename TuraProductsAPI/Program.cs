@@ -6,6 +6,8 @@ using System.Net;
 using Newtonsoft;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
+using TotalEntitiesDataAccessLibrary.Context;
+using IntranetDataAccessLibrary.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,8 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<TIDataDbContext>();
+builder.Services.AddScoped<TuraTotalContext>();
+builder.Services.AddScoped<ItturaContext>();
 builder.Services.AddScoped<PdfService>();
 builder.Services.AddScoped<ParcelService>();
 builder.Services.AddScoped<InvoiceService>();

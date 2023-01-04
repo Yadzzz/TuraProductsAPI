@@ -29,6 +29,10 @@ public partial class TuraTotalContext : DbContext
 
     public virtual DbSet<SalesInvoiceLine> SalesInvoiceLines { get; set; }
 
+    public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<Specialkunder> Specialkunders { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -373,6 +377,148 @@ public partial class TuraTotalContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Your Order No_");
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.HasKey(e => e.No).HasName("Customer$0");
+
+            entity.ToTable("Customer");
+
+            entity.Property(e => e.No)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("No_");
+            entity.Property(e => e.Address)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Address2)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Address 2");
+            entity.Property(e => e.AllowLineDisc).HasColumnName("Allow Line Disc_");
+            entity.Property(e => e.BillToCustomerNo)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("Bill-to Customer No_");
+            entity.Property(e => e.ChainCoded)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("Chain Coded");
+            entity.Property(e => e.ChainName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Chain Name");
+            entity.Property(e => e.City)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.Contact)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CountryRegionCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Country_Region Code");
+            entity.Property(e => e.CreditLimitLcy)
+                .HasColumnType("decimal(38, 20)")
+                .HasColumnName("Credit Limit (LCY)");
+            entity.Property(e => e.CurrencyCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Currency Code");
+            entity.Property(e => e.CustomerDiscGroup)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("Customer Disc_ Group");
+            entity.Property(e => e.CustomerPriceGroup)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Customer Price Group");
+            entity.Property(e => e.EMail)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasColumnName("E-Mail");
+            entity.Property(e => e.Eancode)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("EANCode");
+            entity.Property(e => e.FaxNo)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("Fax No_");
+            entity.Property(e => e.FeeCustomerGroupCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Fee Customer Group Code");
+            entity.Property(e => e.HomePage)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasColumnName("Home Page");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Name2)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Name 2");
+            entity.Property(e => e.Ordertype)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.PaymentTermsCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Payment Terms Code");
+            entity.Property(e => e.PhoneNo)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("Phone No_");
+            entity.Property(e => e.PostCode)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("Post Code");
+            entity.Property(e => e.PricelistInterval).HasColumnName("Pricelist Interval");
+            entity.Property(e => e.PricesIncludingVat).HasColumnName("Prices Including VAT");
+            entity.Property(e => e.SearchName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Search Name");
+            entity.Property(e => e.ShipToCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Ship-to Code");
+            entity.Property(e => e.ShipmentMethodCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Shipment Method Code");
+            entity.Property(e => e.TelexNo)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("Telex No_");
+            entity.Property(e => e.TerritoryCode)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("Territory Code");
+            entity.Property(e => e.Timestamp)
+                .IsRowVersion()
+                .IsConcurrencyToken()
+                .HasColumnName("timestamp");
+            entity.Property(e => e.VatRegistrationNo)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("VAT Registration No_");
+            entity.Property(e => e.WebShop).HasColumnName("Web Shop");
+        });
+
+        modelBuilder.Entity<Specialkunder>(entity =>
+        {
+            entity.ToTable("Specialkunder");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CustomerNo).HasColumnName("customer_no");
+            entity.Property(e => e.Info).HasColumnName("info");
+            entity.Property(e => e.SsmaTimeStamp)
+                .HasMaxLength(255)
+                .HasColumnName("SSMA_TimeStamp");
         });
 
         OnModelCreatingPartial(modelBuilder);
