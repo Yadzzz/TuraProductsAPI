@@ -33,8 +33,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
         }
 
         // GET: api/Customers/5
-        //[HttpGet("{id}")]
-        [Route("id/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(string id)
         {
           if (_context.Customers == null)
@@ -53,22 +52,21 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
 
         // GET: api/Customers/5
         //[HttpGet("{name}")]
-        [Route("name/{name}")]
-        public async Task<ActionResult<List<Customer>>> GetCustomerByName(string name)
-        {
-            if (_context.Customers == null)
-            {
-                return NotFound();
-            }
-            var customer = await _context.Customers.Where(x => x.Name == name).ToListAsync();
+        //public async Task<ActionResult<List<Customer>>> GetCustomerByName(string name)
+        //{
+        //    if (_context.Customers == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var customer = await _context.Customers.Where(x => x.Name.Contains(name)).ToListAsync();
 
-            if (customer == null)
-            {
-                return NotFound();
-            }
+        //    if (customer == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return customer;
-        }
+        //    return customer;
+        //}
 
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
