@@ -10,7 +10,7 @@ using IntranetDataAccessLibrary.Models;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/intranet/customers/[controller]")]
     [ApiController]
     public class SpecialCustomersController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
           {
               return NotFound();
           }
-            return await _context.SpecialCustomers.ToListAsync();
+            return await _context.SpecialCustomers.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
         // GET: api/SpecialCustomers/5

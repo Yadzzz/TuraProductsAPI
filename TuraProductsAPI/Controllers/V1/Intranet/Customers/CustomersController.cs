@@ -10,7 +10,7 @@ using TotalEntitiesDataAccessLibrary.Models;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/intranet/customers/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -33,7 +33,8 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
         }
 
         // GET: api/Customers/5
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
+        [Route("id/{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(string id)
         {
           if (_context.Customers == null)
@@ -41,6 +42,25 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
               return NotFound();
           }
             var customer = await _context.Customers.FindAsync(id);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return customer;
+        }
+
+        // GET: api/Customers/5
+        //[HttpGet("{name}")]
+        [Route("name/{name}")]
+        public async Task<ActionResult<List<Customer>>> GetCustomerByName(string name)
+        {
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
+            var customer = await _context.Customers.Where(x => x.Name == name).ToListAsync();
 
             if (customer == null)
             {
