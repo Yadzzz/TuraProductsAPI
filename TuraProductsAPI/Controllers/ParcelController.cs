@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TuraProductsAPI.Attributes;
 using TuraProductsAPI.Services;
 using TuraProductsAPI.Services.Parcel;
 
@@ -6,6 +7,7 @@ using TuraProductsAPI.Services.Parcel;
 
 namespace TuraProductsAPI.Controllers
 {
+    [ApiKey]
     [Route("api/[controller]")]
     [ApiController]
     public class ParcelController : ControllerBase

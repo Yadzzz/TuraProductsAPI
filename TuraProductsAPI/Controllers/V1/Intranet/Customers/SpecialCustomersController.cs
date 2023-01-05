@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IntranetDataAccessLibrary.Context;
 using IntranetDataAccessLibrary.Models;
+using TuraProductsAPI.Attributes;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
 {
+    [ApiKey]
     [Route("api/v1/intranet/customers/[controller]")]
     [ApiController]
     public class SpecialCustomersController : ControllerBase
@@ -33,14 +35,14 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
         }
 
         // GET: api/SpecialCustomers/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SpecialCustomer>> GetSpecialCustomer(int id)
+        [HttpGet("{customerNumber}")]
+        public async Task<ActionResult<SpecialCustomer>> GetSpecialCustomer(string customerNumber)
         {
           if (_context.SpecialCustomers == null)
           {
               return NotFound();
           }
-            var specialCustomer = await _context.SpecialCustomers.FindAsync(id);
+            var specialCustomer = await _context.SpecialCustomers.Where(x => x.CustomerNumber == customerNumber).FirstOrDefaultAsync();
 
             if (specialCustomer == null)
             {

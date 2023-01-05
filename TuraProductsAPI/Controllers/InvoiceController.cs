@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TuraProductsAPI.Services.Invoice;
 using TuraProductsAPI.Services;
+using TuraProductsAPI.Attributes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TuraProductsAPI.Controllers
 {
+    [ApiKey]
     [Route("api/[controller]")]
     [ApiController]
     public class InvoiceController : ControllerBase

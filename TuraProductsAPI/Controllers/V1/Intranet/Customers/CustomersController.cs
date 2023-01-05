@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TotalEntitiesDataAccessLibrary.Context;
 using TotalEntitiesDataAccessLibrary.Models;
+using TuraProductsAPI.Attributes;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
 {
+    [ApiKey]
     [Route("api/v1/intranet/customers/[controller]")]
     [ApiController]
     public class CustomersController : ControllerBase
@@ -25,10 +27,10 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
-          if (_context.Customers == null)
-          {
-              return NotFound();
-          }
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
             return await _context.Customers.ToListAsync();
         }
 
@@ -36,10 +38,10 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(string id)
         {
-          if (_context.Customers == null)
-          {
-              return NotFound();
-          }
+            if (_context.Customers == null)
+            {
+                return NotFound();
+            }
             var customer = await _context.Customers.FindAsync(id);
 
             if (customer == null)
@@ -49,24 +51,6 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
 
             return customer;
         }
-
-        // GET: api/Customers/5
-        //[HttpGet("{name}")]
-        //public async Task<ActionResult<List<Customer>>> GetCustomerByName(string name)
-        //{
-        //    if (_context.Customers == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var customer = await _context.Customers.Where(x => x.Name.Contains(name)).ToListAsync();
-
-        //    if (customer == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return customer;
-        //}
 
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -104,10 +88,10 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Customers
         [HttpPost]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-          if (_context.Customers == null)
-          {
-              return Problem("Entity set 'TuraTotalContext.Customers'  is null.");
-          }
+            if (_context.Customers == null)
+            {
+                return Problem("Entity set 'TuraTotalContext.Customers'  is null.");
+            }
             _context.Customers.Add(customer);
             try
             {

@@ -1,11 +1,13 @@
 ﻿using IntranetDataAccessLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
+using TuraProductsAPI.Attributes;
 using TuraProductsAPI.Models.Shipments;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Logistics.Shipments
 {
+    [ApiKey]
     [Route("api/v1/intranet/logistics/shipments/[controller]")]
     [ApiController]
     public class ShipmentUpdateController : ControllerBase

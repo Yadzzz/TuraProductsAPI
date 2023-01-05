@@ -3,12 +3,14 @@ using System;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Http.Headers;
+using TuraProductsAPI.Attributes;
 using TuraProductsAPI.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TuraProductsAPI.Controllers
 {
+    [ApiKey]
     [Route("api/pdf")]
     [ApiController]
     public class DocumentsController : ControllerBase
