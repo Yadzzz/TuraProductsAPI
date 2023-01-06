@@ -34,7 +34,7 @@ namespace TuraProductsAPI.Controllers.V1.Intranet.Networks
 
         // GET: api/NetworkIps/5
         [HttpGet("{networkId}")]
-        public async Task<ActionResult<List<NetworkIp>>> GetNetworkIp(int networkId)
+        public async Task<ActionResult<IEnumerable<NetworkIp>>> GetNetworkIp(int networkId)
         {
           if (_context.NetworkIps == null)
           {
