@@ -98,9 +98,11 @@ public partial class ItturaContext : DbContext
 
     public virtual DbSet<Wan> Wans { get; set; }
 
+
+    //optionsBuilder.UseSqlServer("Data Source=TUF;Initial Catalog=ITTura;Integrated Security=SSPI;Trusted_Connection=Yes;TrustServerCertificate=True;");
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=TUF;Initial Catalog=ITTura;Integrated Security=SSPI;Trusted_Connection=Yes;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Data Source=192.168.1.4;Initial Catalog=IntranetTest;User ID=Intranet-Db-User;Password=IntrTura12!;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

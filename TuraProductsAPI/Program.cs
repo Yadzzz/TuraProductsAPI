@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using TotalEntitiesDataAccessLibrary.Context;
 using IntranetDataAccessLibrary.Context;
+using StreamServiceDataAccessLibrary.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<TIDataDbContext>();
 builder.Services.AddScoped<TuraTotalContext>();
 builder.Services.AddScoped<ItturaContext>();
+builder.Services.AddScoped<StrsTuraArchiveNewContext>();
 builder.Services.AddScoped<PdfService>();
 builder.Services.AddScoped<ParcelService>();
 builder.Services.AddScoped<InvoiceService>();

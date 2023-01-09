@@ -12,12 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj" />
+    <ProjectReference Include="..\IntranetDataAccessLibrary\IntranetDataAccessLibrary.csproj" />
     <ProjectReference Include="..\StreamServiceDataAccessLibrary\StreamServiceDataAccessLibrary.csproj" />
     <ProjectReference Include="..\TotalEntitiesDataAccessLibrary\TotalEntitiesDataAccessLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Intranet\" />
   </ItemGroup>
 
 </Project>

@@ -29,7 +29,8 @@ namespace TuraProductsAPI.Services.PDF.Documents
 
         public DocumentData? GetDocumentData()
         {
-            byte[] documentData;
+            DocumentData document = new();
+            //byte[] documentData;
 
             using (StrsTuraArchiveNewContext context = new StrsTuraArchiveNewContext())
             {
@@ -43,7 +44,12 @@ namespace TuraProductsAPI.Services.PDF.Documents
                         return null;
                     }
 
-                    documentData = data.DocumentData;
+                    document.PartPartId = data.PartPartId;
+                    document.InvoiceDate = data.InvoiceDate;
+                    document.Data = data.DocumentData;
+                    document.InvoiceNumber = data.InvoiceNumber;
+                    document.CustomerNumber = data.CustomerNumber;
+                    document.CreationDateTime = data.BlobInfoCreationDateTime;
                 }
                 catch (Exception ex)
                 {
@@ -53,7 +59,7 @@ namespace TuraProductsAPI.Services.PDF.Documents
                 }
             }
 
-            return new DocumentData(this.DocumentNumber, this.DocumentType, documentData);
+            return document;
         }
 
         public void DeleteDocumentData()

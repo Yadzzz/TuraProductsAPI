@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StreamServiceDataAccessLibrary.Models;
 using System;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Http.Headers;
 using TuraProductsAPI.Attributes;
 using TuraProductsAPI.Services;
+using TuraProductsAPI.Services.PDF;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,6 +29,13 @@ namespace TuraProductsAPI.Controllers
         // GET api/<DocumentsController>/5/invoice
         [HttpGet("getdocumentbytes/{documentNumber}/{type}")]
         public byte[]? Get(string documentNumber, string type)
+        {
+            return this._pdfService.GetDocumentData(documentNumber, type).Data;
+        }
+
+        // GET api/<DocumentsController>/5/invoice
+        [HttpGet("getdocumendata/{documentNumber}/{type}")]
+        public DocumentData GetInvoice(string documentNumber, string type)
         {
             return this._pdfService.GetDocumentData(documentNumber, type);
         }

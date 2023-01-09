@@ -1,11 +1,12 @@
-﻿using TuraProductsAPI.Services.PDF;
+﻿using StreamServiceDataAccessLibrary.Models;
+using TuraProductsAPI.Services.PDF;
 using TuraProductsAPI.Services.PDF.Documents;
 
 namespace TuraProductsAPI.Services
 {
     public class PdfService
     {
-        public byte[]? GetDocumentData(string documentNumber, string type)
+        public DocumentData GetDocumentData(string documentNumber, string type)
         {
             if(type.ToLower() == "invoice")
             {
@@ -33,7 +34,7 @@ namespace TuraProductsAPI.Services
             }
         }
 
-        public byte[]? GetInvoice(string documentNumber)
+        public DocumentData GetInvoice(string documentNumber)
         {
             ConcreteDocumentsCreator documenctCreator = new ConcreteDocumentsCreator();
             var invoice = documenctCreator.CreateInvoiceDocument(documentNumber);
@@ -43,17 +44,17 @@ namespace TuraProductsAPI.Services
                 return null;
             }
 
-            DocumentData? documentData = invoice.GetDocumentData();
+            var documentData = invoice.GetDocumentData();
 
             if (documentData == null || documentData.Data == null)
             {
                 return null;
             }
 
-            return documentData.Data;
+            return documentData;
         }
 
-        public byte[]? GetDelivery(string documentNumber)
+        public DocumentData GetDelivery(string documentNumber)
         {
             ConcreteDocumentsCreator documentCreator = new ConcreteDocumentsCreator();
             var delivery = documentCreator.CreateDeliveryDocument(documentNumber);
@@ -70,10 +71,10 @@ namespace TuraProductsAPI.Services
                 return null;
             }
 
-            return documentData.Data;
+            return documentData;
         }
 
-        public byte[]? GetConfirmation(string documentNumber)
+        public DocumentData GetConfirmation(string documentNumber)
         {
             ConcreteDocumentsCreator documentCreator = new ConcreteDocumentsCreator();
             var delivery = documentCreator.CreateConfirmationDocument(documentNumber);
@@ -90,10 +91,10 @@ namespace TuraProductsAPI.Services
                 return null;
             }
 
-            return documentData.Data;
+            return documentData;
         }
 
-        public byte[]? GetInterest(string documentNumber)
+        public DocumentData GetInterest(string documentNumber)
         {
             ConcreteDocumentsCreator documentCreator = new ConcreteDocumentsCreator();
             var delivery = documentCreator.CreateInterestDocument(documentNumber);
@@ -110,10 +111,10 @@ namespace TuraProductsAPI.Services
                 return null;
             }
 
-            return documentData.Data;
+            return documentData;
         }
 
-        public byte[]? GetReturn(string documentNumber)
+        public DocumentData GetReturn(string documentNumber)
         {
             ConcreteDocumentsCreator documentCreator = new ConcreteDocumentsCreator();
             var delivery = documentCreator.CreateReturnDocument(documentNumber);
@@ -130,7 +131,7 @@ namespace TuraProductsAPI.Services
                 return null;
             }
 
-            return documentData.Data;
+            return documentData;
         }
     }
 }
