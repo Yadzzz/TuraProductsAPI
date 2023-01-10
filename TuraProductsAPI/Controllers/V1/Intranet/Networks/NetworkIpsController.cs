@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IntranetDataAccessLibrary.Context;
 using IntranetDataAccessLibrary.Models;
+using TuraProductsAPI.Attributes;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Networks
 {
+    //[ApiKey]
     [Route("api/v1/intranet/networks/[controller]")]
     [ApiController]
     public class NetworkIpsController : ControllerBase

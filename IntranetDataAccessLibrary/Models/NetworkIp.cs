@@ -21,5 +21,5 @@ public partial class NetworkIp
 
     public int NetworkId { get; set; }
 
-    public virtual Network Network { get; set; } = null!;
+    //public virtual Network Network { get; set; } = null!;
 }

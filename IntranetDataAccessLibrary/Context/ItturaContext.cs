@@ -486,10 +486,10 @@ public partial class ItturaContext : DbContext
             entity.Property(e => e.Ip3).HasColumnName("ip_3");
             entity.Property(e => e.Ip4).HasColumnName("ip_4");
 
-            entity.HasOne(d => d.Network).WithMany(p => p.NetworkIps)
-                .HasForeignKey(d => d.NetworkId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NetworkIP_Network");
+            //entity.HasOne(d => d.Network).WithMany(p => p.NetworkIps)
+            //    .HasForeignKey(d => d.NetworkId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_NetworkIP_Network");
         });
 
         modelBuilder.Entity<NetworkLocation>(entity =>

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StreamServiceDataAccessLibrary.Context;
 using StreamServiceDataAccessLibrary.Models;
+using TuraProductsAPI.Attributes;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.PdfArchive
 {
+    [ApiKey]
     [Route("api/v1/intranet/pdfarchive/[controller]")]
     [ApiController]
     public class MetaLeveransbeksController : ControllerBase

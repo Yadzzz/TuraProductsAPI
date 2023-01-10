@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IntranetDataAccessLibrary.Context;
 using IntranetDataAccessLibrary.Models;
+using TuraProductsAPI.Attributes;
 
 namespace TuraProductsAPI.Controllers.V1.Intranet.Claims
 {
+    [ApiKey]
     [Route("api/v1/intranet/claims/[controller]")]
     [ApiController]
     public class ClaimsController : ControllerBase

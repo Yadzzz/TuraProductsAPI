@@ -14,9 +14,9 @@ namespace TuraProductsAPI.Services.Intranet.Orders
 {
     public class OrdersDataRetriever
     {
-        public List<Order> GetOrders()
+        public List<R08T1> GetOrders()
         {
-            List<Order> orders = new List<Order>();
+            List<R08T1> orders = new List<R08T1>();
 
             try
             {
@@ -38,7 +38,7 @@ namespace TuraProductsAPI.Services.Intranet.Orders
                         {
                             while (dataReader.Read())
                             {
-                                orders.Add(new Order()
+                                orders.Add(new R08T1()
                                 {
                                     routeno = dataReader["routeno"].ToString(),
                                     regdate = Convert.ToDateTime(dataReader["regdate"].ToString()),
@@ -52,11 +52,72 @@ namespace TuraProductsAPI.Services.Intranet.Orders
                     }
                 }
 
-                Console.WriteLine(orders.Count());
                 return orders;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
+                return null;
+            }
+        }
+
+        public List<O08T1> GetNavOrder(string? navId, string? orderId)
+        {
+            List<O08T1> orders = new();
+
+            try
+            {
+                using (var context = new IntranetDataAccessLibrary.Context.ItturaContext())
+                {
+                    using (var cmd = context.Database.GetDbConnection().CreateCommand())
+                    {
+                        cmd.CommandText = "dbo.[GetAstroOrderstatusByNavOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        if (navId == null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@NavOrderNo", DBNull.Value));
+                            cmd.Parameters.Add(new SqlParameter("@CustomerOrderNo", orderId));
+
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter("@NavOrderNo", navId));
+                            cmd.Parameters.Add(new SqlParameter("@CustomerOrderNo", DBNull.Value));
+                        }
+
+                        if (cmd.Connection.State != ConnectionState.Open)
+                            cmd.Connection.Open();
+
+                        using (var dataReader = cmd.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                O08T1 order = new()
+                                {
+                                    ordno = dataReader["ordno"].ToString(),
+                                    regdate = Convert.ToDateTime(dataReader["regdate"]),
+                                    linestat = Convert.ToInt16(dataReader["linestat"]),
+                                    statdate = Convert.ToDateTime(dataReader["statdate"]),
+                                    partno = dataReader["partno"].ToString(),
+                                    partdsc1 = dataReader["partdsc1"].ToString(),
+                                    reqquant = Convert.ToDecimal(dataReader["reqquant"]),
+                                    delquant = Convert.ToDecimal(dataReader["delquant"]),
+                                    ordline2 = dataReader["ordline2"].ToString(),
+                                    eorderid = dataReader["eorderid"].ToString()
+                                };
+
+                                orders.Add(order);
+                            }
+                        }
+                    }
+                }
+
+                return orders;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
                 return null;
             }
         }

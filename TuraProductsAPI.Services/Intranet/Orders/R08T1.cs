@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TuraProductsAPI.Services.Intranet.Orders
 {
-    public class Order
+    public class R08T1
     {
         public string routeno { get; set; }
         public DateTime regdate { get; set; }
